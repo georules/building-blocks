@@ -167,15 +167,14 @@ function parseCode(template, files) {
     })()</script>`
 
   template = xmloverride + template;
-
   // We intercept onerror to give better line numbers in your console
   // 5 is a manual count of the added template code for this section of the template
   // we could use this offset to set a marker in the codemirror gutter
   var lines =  xmloverride.split(/\r\n|\r|\n/).length + 5 - 1
   template = `<script>(function(){
-    store = window.onerror
     window.onerror = function(msg, url, lineNumber) {
-      console.debug('blockbuilder editor error on line: ' + (lineNumber-`+lines+`))
+      window.parent.postMessage({lineNumber:(lineNumber-`+lines+`), message:msg}, "`+window.location.origin+`")
+      //console.debug('blockbuilder editor error on line: ' + (lineNumber-`+lines+`))
     }
   })()</script>` + template
 

@@ -78,7 +78,7 @@ var EditorJS = React.createClass({
       var horizontalMode, fixedContainer;
       var xOffset, yOffset;
       // if its side-by-side
-      if(this.props.mode === "☮"){ 
+      if(this.props.mode === "☮"){
         horizontalMode = "page";
         //fixedContainer = element.getBoundingClientRect().right
         fixedContainer = true;
@@ -92,7 +92,7 @@ var EditorJS = React.createClass({
       window.Inlet(this.codeMirror, {
         horizontalMode: horizontalMode,
         fixedContainer: fixedContainer,
-        slider: {yOffset: yOffset, xOffset: xOffset, width: "200px"}, 
+        slider: {yOffset: yOffset, xOffset: xOffset, width: "200px"},
         picker:{ bottomOffset: 20, topOffset: 230}
       });
 
@@ -103,7 +103,7 @@ var EditorJS = React.createClass({
       this.codeMirror.on('keydown', function(codeMirror, keyboardEvent) {
         // TODO this should probably be done on the window so we can hit escape anywhere
         if (keyboardEvent.keyCode === 27) {  // 27 is keyCode for Escape key
-          if ( (document.body.scrollTop > 0) || (document.documentElement.scrollTop > 0) /* Firefox */ ) 
+          if ( (document.body.scrollTop > 0) || (document.documentElement.scrollTop > 0) /* Firefox */ )
             d3.select("div.renderer").classed("popped", function(d){
               return !d3.select(this).classed('popped');
             });

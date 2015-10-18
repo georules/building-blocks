@@ -72,13 +72,37 @@ var EditorHTML = React.createClass({
         theme: 'twilight',
         //theme: 'elegant',
         lineWrapping: true,
-        viewportMargin: Infinity
+        viewportMargin: Infinity,
+        gutters: ['errors']
       });
+
+      var marker = function(message) {
+        var marker = document.createElement("div");
+        marker.innerHTML = "●";
+        marker.style.color = "#dd737a"
+        marker.style.backgroundColor = "#ffffff"
+        marker.style.opacity = 1
+        var tooltip;
+        marker.onmouseover = function() {
+          tooltip = document.createElement("div");
+          tooltip.innerHTML = message
+          marker.appendChild(tooltip)
+        }
+        marker.onmouseout = function() {
+          marker.removeChild(tooltip)
+        }
+        return marker
+      }.bind(this)
+
+      window.addEventListener("message", function(event) {
+        if (event.origin==="null") // this happens in same origin?
+          this.codeMirror.setGutterMarker(event.data.lineNumber-1, "errors", marker(event.data.message))
+      }.bind(this))
 
       var horizontalMode, fixedContainer;
       var xOffset, yOffset;
       // if its side-by-side
-      if(this.props.mode === "☮"){ 
+      if(this.props.mode === "☮"){
         horizontalMode = "page";
         //fixedContainer = element.getBoundingClientRect().right
         fixedContainer = true;
@@ -92,17 +116,18 @@ var EditorHTML = React.createClass({
       window.Inlet(this.codeMirror, {
         horizontalMode: horizontalMode,
         fixedContainer: fixedContainer,
-        slider: {yOffset: yOffset, xOffset: xOffset, width: "200px"}, 
+        slider: {yOffset: yOffset, xOffset: xOffset, width: "200px"},
         picker:{ bottomOffset: 20, topOffset: 230}
       });
 
       this.codeMirror.on('change', ()=>{
         gist.files[this.props.active].content = this.codeMirror.getValue();
         Actions.localGistUpdate(gist);
+        this.codeMirror.clearGutter("errors")
       });
       this.codeMirror.on('keydown', function(codeMirror, keyboardEvent) {
         if (keyboardEvent.keyCode === 27) {  // 27 is keyCode for Escape key
-          if ( (document.body.scrollTop > 0) || (document.documentElement.scrollTop > 0) /* Firefox */ ) 
+          if ( (document.body.scrollTop > 0) || (document.documentElement.scrollTop > 0) /* Firefox */ )
             d3.select("div.renderer").classed("popped", function(d){
               return !d3.select(this).classed('popped');
             });
