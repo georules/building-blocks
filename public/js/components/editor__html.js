@@ -8,8 +8,11 @@
 // External Dependencies
 // ------------------------------------
 import React from 'react';
+import ReactDOM from 'react';
 import logger from 'bragi-browser';
 import ExecutionEnvironment from 'react/lib/ExecutionEnvironment';
+var ReactTooltip = require("react-tooltip")
+import ErrorMarker from './editor__error-marker';
 
 // Internal Dependencies
 // ------------------------------------
@@ -76,27 +79,19 @@ var EditorHTML = React.createClass({
         gutters: ['errors']
       });
 
-      var marker = function(message) {
-        var marker = document.createElement("div");
-        marker.innerHTML = "●";
-        marker.style.color = "#dd737a"
-        marker.style.backgroundColor = "#ffffff"
-        marker.style.opacity = 1
-        var tooltip;
-        marker.onmouseover = function() {
-          tooltip = document.createElement("div");
-          tooltip.innerHTML = message
-          marker.appendChild(tooltip)
-        }
-        marker.onmouseout = function() {
-          marker.removeChild(tooltip)
-        }
-        return marker
-      }.bind(this)
+      var tooltip = React.createElement(ErrorMarker);
 
+      // handle error messages from iframe sandbox
       window.addEventListener("message", function(event) {
-        if (event.origin==="null") // this happens in same origin?
-          this.codeMirror.setGutterMarker(event.data.lineNumber-1, "errors", marker(event.data.message))
+        if (event.origin==="null") {
+          var message = event.data.message.toString();
+          var marker = document.createElement("div");
+          marker.style.color = "#dd737a";
+          //marker.innerHTML = `<div data-tip='`+message+`'data-place='right' data-effect="solid">●</div>`
+          this.codeMirror.setGutterMarker(event.data.lineNumber-1, "errors", marker);
+          var component = ReactDOM.render(tooltip,marker);
+          component.setMessage(message)
+        }
       }.bind(this))
 
       var horizontalMode, fixedContainer;
