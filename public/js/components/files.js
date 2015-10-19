@@ -57,7 +57,7 @@ var Files = React.createClass({
 
     var hideShowButton = ""
     if(!files.length){
-      hideShowButton = "hidden"      
+      hideShowButton = "hidden"
     }
     var thumbTab = (<FilesTab file={gist.files['thumbnail.png']} {...this.props}></FilesTab>)
     if(this.props.hidethumb){
@@ -71,8 +71,8 @@ var Files = React.createClass({
         {thumbTab}
         {extra}
         <FilesAdd {...this.props}></FilesAdd>
-        <ReactTooltip />
-        <a id="files__show" data-tip="Show more files" data-place='bottom' data-effect="solid" onClick={this.showMore} className={"file " + hideShowButton} >
+        <ReactTooltip id='tooltip_files'/>
+        <a id="files__show" data-for="tooltip_files" data-tip="Show more files" data-place='bottom' data-effect="solid" onClick={this.showMore} className={"file " + hideShowButton} >
         ⋯ ({files.length})
         </a>
         <div id='files__more' className={show}>

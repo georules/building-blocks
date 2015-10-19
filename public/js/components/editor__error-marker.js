@@ -34,6 +34,9 @@ var ErrorMarker = React.createClass({
         <ReactTooltip id='ErrorMarker'/>
       </div>
     )
+    /*return (
+        <div data-tip={this.state.message} data-place='right' data-effect="solid">●</div>
+    )*/
   }
 });
 

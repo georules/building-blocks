@@ -16,15 +16,15 @@ var UserNav = React.createClass({
     var auth;
     var user = this.props.user;
     if(!user || !user.login) {
-      auth = ( 
-        <div data-tip="Login with GitHub to save gists to your account" 
+      auth = (
+        <div data-for="tooltip_app" data-tip="Login with GitHub to save gists to your account" 
             data-place="bottom" data-effect="solid" style={{height:"50px"}}>
-          <a 
+          <a
             className="header-link"
             id="login"
             href={ "/auth/github/?redirect=" + this.props.path }>
           login
-          </a> 
+          </a>
           </div>
         )
     } else {

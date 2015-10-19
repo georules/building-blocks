@@ -40,7 +40,7 @@ var FilesAdd = React.createClass({
   },
   handleBlob: function handleBlob(file) {
     var reader = new FileReader();
-    Actions.setModal("Sorry, the gist API supports text files only.") 
+    Actions.setModal("Sorry, the gist API supports text files only.")
     console.log("TEXT FILES ONLY")
     document.getElementById('files__input').value = '';
     // TODO: clear the file input
@@ -82,7 +82,7 @@ var FilesAdd = React.createClass({
           <input onChange={this.selectFile} type="file" id="files__input" name="files[]"/>
         </div>
 
-        <a id="files__add"  data-tip="Add a new file" data-place='bottom' data-effect="solid" onClick={this.showAdd} className="file">➕</a>
+        <a id="files__add"  data-for="tooltip_files" data-tip="Add a new file" data-place='bottom' data-effect="solid" onClick={this.showAdd} className="file">➕</a>
       </div>
     )
   }
